@@ -14,6 +14,11 @@ metadata:
   name: ogx-test-2-ogx
 spec:
   replicas: 1
+  # Recreate (not the default RollingUpdate) because the demo cluster is tiny:
+  # a rolling update needs a surge pod that cannot be scheduled, which deadlocks
+  # the rollout. Recreate terminates the old pod before starting the new one.
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/instance: ogx-test-2-ogx
